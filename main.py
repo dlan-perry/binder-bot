@@ -5,6 +5,7 @@ import mongo
 from sqlalchemy.orm import Session
 import typing
 from typing import Literal
+from decouple import config
 intents = discord.Intents.default()
 
 intents.message_content= True
@@ -132,4 +133,4 @@ async def on_message(message):
         await message.channel.send("yoyo")
 '''
 
-bot.run('aw man')
+bot.run(config("discord_key"))
