@@ -132,4 +132,4 @@ async def on_message(message):
         await message.channel.send("yoyo")
 '''
 
-bot.run('MTA4OTM3MDcyNjQ1NDI4MDI5Mg.GuRosY.9CmmT02coCUbYTrSUiEeC4PZKk0uYVorDw325c')
+bot.run('aw man')
