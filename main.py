@@ -34,6 +34,26 @@ async def decks(ctx, member: discord.Member):
             await ctx.send(item["cards"])
 
 
+@bot.command(name="add deck")
+async def add_deck(ctx):
+    if ctx.message:
+        pass
+
+    
+@bot.command(name="deckcheck")
+async def deckcheck(ctx, member: discord.Member):
+    
+    pass
+'''
+@bot.command(name="decks")
+async def decks_2(ctx):
+    cnt, resp = mongo.find_decks(ctx.author.id)
+    if cnt == 0:
+        await ctx.send(ctx.author + " has no decks stored")
+    else:
+        for item in resp:
+            await ctx.send(item["cards"])
+'''
 @bot.command(name="new")
 async def new(ctx, token: Literal["deck", "card"], atmnt : typing.Optional[discord.Attachment]):
     if token == "deck":
@@ -55,13 +75,18 @@ async def card(ctx, *parts):
 @bot.listen('on_message')
 async def on_message(message):
     print("called")
-    if len(message.content.split("DD")) > 2:
+    
+    cards = []
+    if (message.content.count("DD")>=2):
+        cards = message.content.split("DD")
+    print(cards)
+    cards = cards[1::2]
+    if cards:
         card = None
-        for count, phrase in enumerate(message.content.split("DD")):
-            if count %2 == 1:
-                card = mongo.find_card_by_name(format_card_name(phrase))
-        if card:
-            await message.channel.send(check_card(card))
+        for count, phrase in enumerate(cards):
+            card = mongo.find_card_by_name(format_card_name(phrase))
+            if card:
+                await message.channel.send(check_card(card))
         
 
 

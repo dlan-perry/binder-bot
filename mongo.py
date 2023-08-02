@@ -3,26 +3,54 @@ from pymongo import MongoClient
 import urllib3
 
 http = urllib3.PoolManager()
-client = MongoClient("localhost", 27017, maxPoolSize=50)
-db = client.tradability
+client = MongoClient("192.168.1.101", 27017, maxPoolSize=50)
+db = client.binder_bot
 cards = db['cards']
 users = db['users']
-decks = db['decks']
 cursor = cards.find({"name": "Static Orb"})
 
+"""
 
+Example Deck Structure
+{"deck1": [
+            {"format" : format},
+            {"main_deck": [
+            {"card_name": amount},
+            {"card_name2": amount}
+            ]}, 
+            {"sideboard": []}
+          ]
+}
+
+"""
 
 def add_user(token:str):
     if not users.find_one({"user_id": token}):
-        users.insert_one({"user_id" : token})
+        users.insert_one({
+                          "user_id" : token,
+                          "decks" : [],
+                          "binders": {
+                              "selling":[],
+                              "trading":[], 
+                              "looking":[], 
+                              "have":[]
+                              }
+                          })
         return True
     else:
         print("user already exists")
         return False
 
+
+def add_to_binder(user_id, card_name, set, binder="TRADING", quantity=1):
+    #db.users.update({"user_id": 1}, {$push: {"trading" : "Dylan"}});
+    pass
+
+
+
 def find_decks(token:str):
     print("herrrr")
-    return decks.count_documents({"user_id": token}), decks.find({"user_id": token})
+    #return decks.count_documents({"user_id": token}), decks.find({"user_id": token})
     pass
 
 def add_deck(user_id: str, file):
@@ -30,7 +58,7 @@ def add_deck(user_id: str, file):
     for line in http.request("GET", file.url).data:
         if line != "":
             decklist.append(str(line))
-    decks.insert_one({"user_id": user_id,
+    users.find_one({"user_id": user_id})["decks"].insert_one({"user_id": user_id,
                       "cards": decklist})
 
 
@@ -39,3 +67,4 @@ def find_card_by_name(card_name: str):
     print(repr(card_name))
     return cards.find_one({"name": card_name})
 
+  
