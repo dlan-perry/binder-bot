@@ -34,7 +34,7 @@ def add_user(token:str):
                               "trading":[], 
                               "looking":[], 
                               "have":[]
-                              }
+                            }
                           })
         return True
     else:
@@ -42,9 +42,11 @@ def add_user(token:str):
         return False
 
 
-def add_to_binder(user_id, card_name, set, binder="TRADING", quantity=1):
-    #db.users.update({"user_id": 1}, {$push: {"trading" : "Dylan"}});
+def add_to_binder(user_id, card_name, set, binder="trading", quantity=1):
+    db.users.update_one({"user_id": user_id}, {'$push' : {"binders." + binder : {"card_name" : "ponder"}} })
     pass
+
+
 
 
 

@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 import typing
 from typing import Literal
 from decouple import config
+
+BINDERS = ["trading", "looking", "have","selling"]
 intents = discord.Intents.default()
 
 intents.message_content= True
@@ -59,6 +61,17 @@ async def new(ctx, token: Literal["deck", "card"], atmnt : typing.Optional[disco
     if token == "deck":
         mongo.add_deck(ctx.author.id, atmnt)
 
+
+@bot.command(name="test")
+async def test(ctx):
+    mongo.add_to_binder(ctx.author.id, "ponder", "mtg", binder="have")
+
+@bot.command(name="add")
+async def insert(ctx, card_name, to, dest, atmnt : typing.Optional[discord.Attachment]):
+    #add ponder to trading
+    if any(BINDERS in args):
+        
+        
 
 
 
