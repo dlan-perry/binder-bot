@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session
 import typing
 from typing import Literal
 from decouple import config
-
+from qualities import Qualities
 BINDERS = ["trading", "looking", "have","selling"]
+
 intents = discord.Intents.default()
 
 intents.message_content= True
@@ -62,29 +63,47 @@ async def new(ctx, token: Literal["deck", "card"], atmnt : typing.Optional[disco
         mongo.add_deck(ctx.author.id, atmnt)
 
 
+
 @bot.command(name="test")
 async def test(ctx):
-    mongo.add_to_binder(ctx.author.id, "ponder", "mtg", binder="have")
+    #mongo.add_to_binder(ctx.author.id, "ponder", "mtg", binder="have")
+    pass
+
 
 @bot.command(name="add")
 async def insert(ctx, card_name, to, dest, atmnt : typing.Optional[discord.Attachment]):
+    pass
     #add ponder to trading
-    if any(BINDERS in args):
-        
-        
+    
+
+
+@bot.command(name="suggest")
+async def suggest(ctx):
+    pass
+
+@bot.command(name="sell")
+async def sell(ctx):
+    pass
+
+@bot.command(name="trade")
+async def trade(ctx):
+    pass
+
+@bot.command(name="buy")
+async def buy(ctx):
+    pass
+
+@bot.command(name="copy")
+async def copy(ctx):
+    pass
+
+
+def format_card(card_name, set=None, foiled=False, quality=Qualities.NM):
+    pass
 
 
 
-@bot.command(name="card")
-async def card(ctx, *parts):
 
-    print(type(parts))
-    card = mongo.find_card_by_name(format_card_name(list(parts)))
-
-    if type(card["oracle_text"]) == str:
-        await ctx.send("Heres the card: " + card["oracle_text"].replace("battlefield", "penis"))
-        await ctx.send(card["image_uris"]["large"])
-        
 @bot.listen('on_message')
 async def on_message(message):
     print("called")
