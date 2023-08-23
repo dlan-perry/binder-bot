@@ -101,7 +101,8 @@ def add_deck(user_id: str, file):
                                                                 "sideboard": decklist[1]
 
                                                                 }}})
-    
+
+def list_deck_names()
 
 
 def find_card_by_name(card_name: str):
